@@ -513,6 +513,84 @@ AI: "I notice I've needed reminding about checking for external
 6. ❌ Track AI performance metrics or create dashboards
 7. ❌ Waste time/tokens on meta-work unrelated to application quality
 8. ❌ Narrate process or provide verbose meta-commentary
+9. ❌ Hardcode data-specific logic in UI components
+10. ❌ Fabricate data when source information is unknown
+
+---
+
+## Data-Driven UI Architecture
+
+**Core Principle**: UI is a "dumb client" that renders based on data availability, not hardcoded logic
+
+### Guiding Philosophy
+
+**Data Layer Controls Behavior**:
+- JSON files are the single source of truth
+- UI components react to data presence/absence automatically
+- No blueprint-specific logic in components
+- Features enable/disable based on file existence
+
+**Real-World Data Acceptance**:
+- Empty/incomplete fields are acceptable
+- Data inconsistencies reflect real enterprise scenarios
+- Never fabricate data to fill gaps
+- Only use placeholders if they make logical sense
+
+**Graceful Degradation**:
+- Buttons auto-disable when data unavailable
+- Buttons auto-enable when data files added (no code changes)
+- No manual toggling or hardcoded blueprint checks
+- Clear visual indicators for unavailable features
+
+### Implementation Patterns
+
+**Data Loading**:
+```typescript
+// ❌ WRONG: Hardcoded blueprint-specific imports
+import ciamCapabilities from '../data/ciam-capabilities.json';
+
+// ✅ RIGHT: Dynamic loading based on blueprintId
+const loadCapabilities = (blueprintId: string) => {
+  try {
+    return import(`../data/${blueprintId}-capabilities.json`);
+  } catch {
+    return null; // Graceful failure
+  }
+};
+```
+
+**Feature Availability**:
+```typescript
+// ❌ WRONG: Hardcoded logic per blueprint
+{blueprintId === 'bp-ciam' && <ViewButton />}
+
+// ✅ RIGHT: Data-driven availability
+const hasCapabilities = checkFileExists(`${blueprintId}-capabilities.json`);
+<ViewButton disabled={!hasCapabilities} />
+```
+
+**Data Validation**:
+- Accept missing/empty metadata fields
+- Don't fill unknown data with fabricated values
+- Use sensible defaults only where obvious (e.g., "API Platform" → "API management")
+- Leave fields empty if source data unavailable
+
+### Design Guidelines
+
+**Scalability**:
+- Design works for 1 blueprint or 100 blueprints
+- No blueprint-specific code branches
+- Data structure drives UI structure
+
+**Maintainability**:
+- Adding new blueprint = adding JSON files only
+- No UI code changes required
+- Automatic feature detection
+
+**Enterprise Reality**:
+- Data can be incomplete (acceptable)
+- Data can be inconsistent (handle gracefully)
+- Data evolves over time (UI adapts automatically)
 
 ---
 

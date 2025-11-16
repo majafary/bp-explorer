@@ -12,5 +12,131 @@
       "updated": "2025-11-15",
       "owner": "Enterprise Architecture"
     }
+  },
+  {
+    "id": "bp-api-platform",
+    "name": "API Platform",
+    "description": "Enterprise API management platform for API gateway, rate limiting, and API lifecycle management",
+    "organization": "Unit CIO Level",
+    "version": "1.0",
+    "status": "planning",
+    "lobs": [],
+    "metadata": {
+      "created": "2025-11-16",
+      "updated": "2025-11-16",
+      "owner": ""
+    }
+  },
+  {
+    "id": "bp-c3",
+    "name": "C3",
+    "description": "Customer Communications and Contact Center platform",
+    "organization": "Unit CIO Level",
+    "version": "1.0",
+    "status": "planning",
+    "lobs": [],
+    "metadata": {
+      "created": "2025-11-16",
+      "updated": "2025-11-16",
+      "owner": ""
+    }
+  },
+  {
+    "id": "bp-conversational-ai",
+    "name": "Conversational AI",
+    "description": "Conversational AI platform with chatbots, virtual assistants, and natural language processing",
+    "organization": "Unit CIO Level",
+    "version": "1.0",
+    "status": "planning",
+    "lobs": [],
+    "metadata": {
+      "created": "2025-11-16",
+      "updated": "2025-11-16",
+      "owner": ""
+    }
+  },
+  {
+    "id": "bp-customer-communications",
+    "name": "Customer Communications",
+    "description": "Multi-channel customer communications platform for notifications and messaging",
+    "organization": "Unit CIO Level",
+    "version": "1.0",
+    "status": "planning",
+    "lobs": [],
+    "metadata": {
+      "created": "2025-11-16",
+      "updated": "2025-11-16",
+      "owner": ""
+    }
+  },
+  {
+    "id": "bp-deposits-fraud",
+    "name": "Deposits Fraud",
+    "description": "Fraud detection and prevention platform for deposit accounts",
+    "organization": "Unit CIO Level",
+    "version": "1.0",
+    "status": "planning",
+    "lobs": [],
+    "metadata": {
+      "created": "2025-11-16",
+      "updated": "2025-11-16",
+      "owner": ""
+    }
+  },
+  {
+    "id": "bp-deposits-platform",
+    "name": "Deposits Platform",
+    "description": "Core deposit account platform and services",
+    "organization": "Unit CIO Level",
+    "version": "1.0",
+    "status": "planning",
+    "lobs": [],
+    "metadata": {
+      "created": "2025-11-16",
+      "updated": "2025-11-16",
+      "owner": ""
+    }
+  },
+  {
+    "id": "bp-intelligent-automation",
+    "name": "Intelligent Automation",
+    "description": "Robotic process automation and workflow automation platform",
+    "organization": "Unit CIO Level",
+    "version": "1.0",
+    "status": "planning",
+    "lobs": [],
+    "metadata": {
+      "created": "2025-11-16",
+      "updated": "2025-11-16",
+      "owner": ""
+    }
+  },
+  {
+    "id": "bp-money-movement",
+    "name": "Money Movement",
+    "description": "Payment processing, money transfers, and transaction management platform",
+    "organization": "Unit CIO Level",
+    "version": "1.0",
+    "status": "planning",
+    "lobs": [],
+    "metadata": {
+      "created": "2025-11-16",
+      "updated": "2025-11-16",
+      "owner": ""
+    }
+  },
+  {
+    "id": "bp-personalization",
+    "name": "Personalization",
+    "description": "Customer experience personalization and recommendation platform",
+    "organization": "Unit CIO Level",
+    "version": "1.0",
+    "status": "planning",
+    "lobs": [],
+    "metadata": {
+      "created": "2025-11-16",
+      "updated": "2025-11-16",
+      "owner": ""
+    }
   }
 ]
