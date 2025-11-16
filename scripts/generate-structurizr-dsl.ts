@@ -17,7 +17,7 @@ const __dirname = path.dirname(__filename);
 const DATA_DIR = path.join(__dirname, '../src/data');
 const JSON_FILE = path.join(DATA_DIR, 'ciam-systems.json');
 const BLUEPRINTS_FILE = path.join(DATA_DIR, 'blueprints.json');
-const OUTPUT_DIR = path.join(__dirname, '../../structurizr-workspace');
+const OUTPUT_DIR = path.join(__dirname, '../structurizr-workspace');
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'workspace.dsl');
 
 // Type definitions

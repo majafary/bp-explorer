@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Generated Structurizr workspace (auto-generated from JSON)
+structurizr-workspace/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

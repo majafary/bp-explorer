@@ -17,9 +17,9 @@ COPY ./package.json ./package.json
 RUN npm install tsx typescript @types/node --save-dev
 
 # Generate workspace.dsl from JSON
-# Note: The script outputs to ../../structurizr-workspace/workspace.dsl by default
-# We need to adjust paths or modify the script
-RUN sed -i 's|../../structurizr-workspace|/workspace|g' generate-structurizr-dsl.ts && \
+# Note: The script outputs to ../structurizr-workspace/workspace.dsl by default
+# We need to adjust paths for container build
+RUN sed -i 's|../structurizr-workspace|/workspace|g' generate-structurizr-dsl.ts && \
     sed -i 's|../src/data|./data|g' generate-structurizr-dsl.ts && \
     mkdir -p /workspace && \
     npx tsx generate-structurizr-dsl.ts && \
