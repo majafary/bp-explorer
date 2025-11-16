@@ -1,0 +1,236 @@
+{
+  "blueprintId": "bp-ciam",
+  "capabilities": [
+    {
+      "id": "cap-ciam-001",
+      "code": "001",
+      "level": 1,
+      "name": "Platform Onboarding (Retail User)",
+      "description": "Capabilities for onboarding retail users to the platform",
+      "children": [
+        {
+          "id": "cap-ciam-001-1",
+          "code": "001-1",
+          "level": 2,
+          "name": "Credential Issuance",
+          "description": "Password and credential management for new users",
+          "children": [
+            { "id": "cap-ciam-001-1-1", "code": "001-1-1", "level": 3, "name": "Digital Password Creation", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-1-2", "code": "001-1-2", "level": 3, "name": "Context-Guided Password Creation", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-1-3", "code": "001-1-3", "level": 3, "name": "Digital Password Reset", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-1-4", "code": "001-1-4", "level": 3, "name": "Locked ID/PIN Unlock", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-1-5", "code": "001-1-5", "level": 3, "name": "ACIF ID Composition", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-1-6", "code": "001-1-6", "level": 3, "name": "Auto-Enrolment/Auto-Composition", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-1-7", "code": "001-1-7", "level": 3, "name": "SAN Aggregation (Cloud Aligned)", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-1-8", "code": "001-1-8", "level": 3, "name": "Password/PIN Reset (Existing App In Context)", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-1-9", "code": "001-1-9", "level": 3, "name": "ID/PIN Enrollment", "systemIds": ["cont-ciam-backend"] }
+          ]
+        },
+        {
+          "id": "cap-ciam-001-2",
+          "code": "001-2",
+          "level": 2,
+          "name": "Enhanced Authenticator Enrollment",
+          "description": "Biometric and device-based authentication enrollment",
+          "children": [
+            { "id": "cap-ciam-001-2-1", "code": "001-2-1", "level": 3, "name": "Mobile Face ID/IDP Biometric Registration", "systemIds": ["cont-ciam-backend", "cont-ciam-ui-sdk"] },
+            { "id": "cap-ciam-001-2-2", "code": "001-2-2", "level": 3, "name": "Profile-Bound Device Binding", "systemIds": ["cont-ciam-backend", "sys-drs"] },
+            { "id": "cap-ciam-001-2-3", "code": "001-2-3", "level": 3, "name": "Desktop Face ID/IDP Registration", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-2-4", "code": "001-2-4", "level": 3, "name": "YubiKey OTP", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-2-5", "code": "001-2-5", "level": 3, "name": "Desktop Fingerprinting", "systemIds": ["cont-ciam-backend", "sys-drs"] },
+            { "id": "cap-ciam-001-2-6", "code": "001-2-6", "level": 3, "name": "Mobile-Bound Device Binding", "systemIds": ["cont-ciam-backend", "sys-drs"] },
+            { "id": "cap-ciam-001-2-7", "code": "001-2-7", "level": 3, "name": "YubiKey WebAuthn-FIDO2", "systemIds": ["cont-ciam-backend"] }
+          ]
+        },
+        {
+          "id": "cap-ciam-001-3",
+          "code": "001-3",
+          "level": 2,
+          "name": "Security Setup",
+          "description": "MFA and security question configuration",
+          "children": [
+            { "id": "cap-ciam-001-3-1", "code": "001-3-1", "level": 3, "name": "MFA Registration", "systemIds": ["cont-ciam-backend", "cont-ciam-ui-sdk"] },
+            { "id": "cap-ciam-001-3-2", "code": "001-3-2", "level": 3, "name": "Custom Security Question", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-3-3", "code": "001-3-3", "level": 3, "name": "Default MFA Assignment", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-001-3-4", "code": "001-3-4", "level": 3, "name": "Duplicate MFA Registration", "systemIds": ["cont-ciam-backend"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cap-ciam-002",
+      "code": "002",
+      "level": 1,
+      "name": "Profile Management",
+      "description": "User profile and credential management capabilities",
+      "children": [
+        {
+          "id": "cap-ciam-002-1",
+          "code": "002-1",
+          "level": 2,
+          "name": "Credential Management",
+          "description": "Self-service credential updates",
+          "children": [
+            { "id": "cap-ciam-002-1-1", "code": "002-1-1", "level": 3, "name": "Self-Service Online Password", "systemIds": ["cont-ciam-backend", "cont-ciam-ui-sdk"] },
+            { "id": "cap-ciam-002-1-2", "code": "002-1-2", "level": 3, "name": "Self-Service Online Username Change", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-002-1-3", "code": "002-1-3", "level": 3, "name": "Self-Service Integrated ID/PIN", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-002-1-4", "code": "002-1-4", "level": 3, "name": "Self-Service Integration (Agent-Driven)", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-002-1-5", "code": "002-1-5", "level": 3, "name": "Self-Service Integration (Forgotten Username)", "systemIds": ["cont-ciam-backend"] }
+          ]
+        },
+        {
+          "id": "cap-ciam-002-2",
+          "code": "002-2",
+          "level": 2,
+          "name": "Security Preferences",
+          "description": "Security settings management",
+          "children": [
+            { "id": "cap-ciam-002-2-1", "code": "002-2-1", "level": 3, "name": "Self-Service Change Challenge Question", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-002-2-2", "code": "002-2-2", "level": 3, "name": "Self-Service Change Preference", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-002-2-3", "code": "002-2-3", "level": 3, "name": "Self-Service Manage MFA Preferences", "systemIds": ["cont-ciam-backend", "cont-ciam-ui-sdk"] }
+          ]
+        },
+        {
+          "id": "cap-ciam-002-3",
+          "code": "002-3",
+          "level": 2,
+          "name": "Device/Aggregation Management",
+          "description": "Device and aggregator management",
+          "children": [
+            { "id": "cap-ciam-002-3-1", "code": "002-3-1", "level": 3, "name": "View Registered Devices", "systemIds": ["cont-ciam-backend", "cont-ciam-ui-sdk"] },
+            { "id": "cap-ciam-002-3-2", "code": "002-3-2", "level": 3, "name": "Device Removal/Storage", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-002-3-3", "code": "002-3-3", "level": 3, "name": "Self-Service Remove Device or Aggregator", "systemIds": ["cont-ciam-backend", "cont-ciam-ui-sdk"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cap-ciam-003",
+      "code": "003",
+      "level": 1,
+      "name": "Consumer/Customer Authentication",
+      "description": "Authentication and risk evaluation capabilities",
+      "children": [
+        {
+          "id": "cap-ciam-003-1",
+          "code": "003-1",
+          "level": 2,
+          "name": "Digital Primary Authentication",
+          "description": "Primary authentication methods",
+          "children": [
+            { "id": "cap-ciam-003-1-1", "code": "003-1-1", "level": 3, "name": "Password Login", "systemIds": ["cont-ciam-backend", "cont-ciam-ui-sdk", "sys-ldap"] },
+            { "id": "cap-ciam-003-1-2", "code": "003-1-2", "level": 3, "name": "Mobile Biometric Login", "systemIds": ["cont-ciam-backend", "cont-ciam-ui-sdk"] },
+            { "id": "cap-ciam-003-1-3", "code": "003-1-3", "level": 3, "name": "Desktop ID/PIN", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-003-1-4", "code": "003-1-4", "level": 3, "name": "Streamlined Login (Cookie-based)", "systemIds": ["cont-ciam-backend"] }
+          ]
+        },
+        {
+          "id": "cap-ciam-003-3",
+          "code": "003-3",
+          "level": 2,
+          "name": "Risk Evaluation",
+          "description": "Fraud detection and risk analysis",
+          "children": [
+            { "id": "cap-ciam-003-3-1", "code": "003-3-1", "level": 3, "name": "Behavioral Biometrics & Login", "systemIds": ["cont-ciam-backend", "sys-drs"] },
+            { "id": "cap-ciam-003-3-2", "code": "003-3-2", "level": 3, "name": "Device Fingerprinting", "systemIds": ["cont-ciam-backend", "sys-drs"] },
+            { "id": "cap-ciam-003-3-3", "code": "003-3-3", "level": 3, "name": "Account Takeover Protection", "systemIds": ["cont-ciam-backend", "sys-drs"] },
+            { "id": "cap-ciam-003-3-4", "code": "003-3-4", "level": 3, "name": "Risky Transactions Detection", "systemIds": ["cont-ciam-backend", "sys-drs"] },
+            { "id": "cap-ciam-003-3-5", "code": "003-3-5", "level": 3, "name": "Behavioral Risk Evaluation", "systemIds": ["cont-ciam-backend", "sys-drs"] }
+          ]
+        },
+        {
+          "id": "cap-ciam-003-4",
+          "code": "003-4",
+          "level": 2,
+          "name": "Step-Up Authentication",
+          "description": "Additional authentication factors",
+          "children": [
+            { "id": "cap-ciam-003-4-1", "code": "003-4-1", "level": 3, "name": "One-Time Passcode (Menu-Email)", "systemIds": ["cont-ciam-backend", "cont-ciam-ui-sdk"] },
+            { "id": "cap-ciam-003-4-2", "code": "003-4-2", "level": 3, "name": "One-Time Passcode (SMS)", "systemIds": ["cont-ciam-backend", "cont-ciam-ui-sdk"] },
+            { "id": "cap-ciam-003-4-3", "code": "003-4-3", "level": 3, "name": "One-Time Passcode (Question)", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-003-4-4", "code": "003-4-4", "level": 3, "name": "Challenge Question", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-003-4-5", "code": "003-4-5", "level": 3, "name": "Mobile Push", "systemIds": ["cont-ciam-backend", "cont-ciam-ui-sdk"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cap-ciam-004",
+      "code": "004",
+      "level": 1,
+      "name": "Authorization",
+      "description": "Session management and access control",
+      "children": [
+        {
+          "id": "cap-ciam-004-1",
+          "code": "004-1",
+          "level": 2,
+          "name": "Session Management",
+          "description": "User session lifecycle",
+          "children": [
+            { "id": "cap-ciam-004-1-1", "code": "004-1-1", "level": 3, "name": "Enterprise Session Refresh", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-004-1-2", "code": "004-1-2", "level": 3, "name": "Consumer Session Refresh", "systemIds": ["cont-ciam-backend"] }
+          ]
+        },
+        {
+          "id": "cap-ciam-004-3",
+          "code": "004-3",
+          "level": 2,
+          "name": "Federated Access",
+          "description": "OAuth and SAML integration",
+          "children": [
+            { "id": "cap-ciam-004-3-1", "code": "004-3-1", "level": 3, "name": "SAML Partner Access Fulfill to Token", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-004-3-2", "code": "004-3-2", "level": 3, "name": "Digital Persona OAuth Application", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-004-3-3", "code": "004-3-3", "level": 3, "name": "LOB Federation", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-004-3-4", "code": "004-3-4", "level": 3, "name": "LOB-Based OAuth for Desktop", "systemIds": ["cont-ciam-backend"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cap-ciam-006",
+      "code": "006",
+      "level": 1,
+      "name": "CIAM Operations",
+      "description": "Platform monitoring and management",
+      "children": [
+        {
+          "id": "cap-ciam-006-1",
+          "code": "006-1",
+          "level": 2,
+          "name": "Monitoring & Alerting",
+          "description": "System health and availability monitoring",
+          "children": [
+            { "id": "cap-ciam-006-1-1", "code": "006-1-1", "level": 3, "name": "Live System Monitoring & Dashboards", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-006-1-2", "code": "006-1-2", "level": 3, "name": "2-Step Login Availability Dashboard", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-006-1-3", "code": "006-1-3", "level": 3, "name": "System Healthcheck Dashboards", "systemIds": ["cont-ciam-backend"] }
+          ]
+        },
+        {
+          "id": "cap-ciam-006-2",
+          "code": "006-2",
+          "level": 2,
+          "name": "Configuration Management",
+          "description": "System configuration and environment management",
+          "children": [
+            { "id": "cap-ciam-006-2-1", "code": "006-2-1", "level": 3, "name": "Environment Configuration Management", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-006-2-2", "code": "006-2-2", "level": 3, "name": "Feature Flag Management", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-006-2-3", "code": "006-2-3", "level": 3, "name": "Security Policy Configuration", "systemIds": ["cont-ciam-backend", "sys-ldap"] }
+          ]
+        },
+        {
+          "id": "cap-ciam-006-3",
+          "code": "006-3",
+          "level": 2,
+          "name": "Analytics, Auditing & Reporting",
+          "description": "Logging and audit capabilities",
+          "children": [
+            { "id": "cap-ciam-006-3-1", "code": "006-3-1", "level": 3, "name": "Monitoring availability in Splunker", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-006-3-2", "code": "006-3-2", "level": 3, "name": "Audit Logging available via CloudWatch", "systemIds": ["cont-ciam-backend"] },
+            { "id": "cap-ciam-006-3-3", "code": "006-3-3", "level": 3, "name": "Full Event-Based Logging", "systemIds": ["cont-ciam-backend"] }
+          ]
+        }
+      ]
+    }
+  ]
+}

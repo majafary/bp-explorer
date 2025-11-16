@@ -1,0 +1,330 @@
+{
+  "blueprintId": "bp-ciam",
+  "systems": [
+    {
+      "id": "sys-ciam-suite",
+      "type": "softwareSystem",
+      "name": "CIAM Integration Suite",
+      "description": "Customer identity and access management platform providing authentication, MFA, device trust, and session management",
+      "tags": ["Internal"],
+      "containers": [
+        {
+          "id": "cont-ciam-backend",
+          "type": "container",
+          "name": "CIAM Backend",
+          "description": "REST API providing authentication and authorization services",
+          "technology": "Node.js 22+, Express 4.18, TypeScript 5.2",
+          "tags": ["Backend", "API"],
+          "components": [
+            {
+              "id": "comp-auth-controller",
+              "type": "component",
+              "name": "AuthController",
+              "description": "Handles login, logout, token refresh operations",
+              "technology": "Express Controller",
+              "tags": ["Controller"]
+            },
+            {
+              "id": "comp-mfa-controller",
+              "type": "component",
+              "name": "MfaController",
+              "description": "Manages multi-factor authentication flows (OTP, Push)",
+              "technology": "Express Controller",
+              "tags": ["Controller"]
+            },
+            {
+              "id": "comp-device-controller",
+              "type": "component",
+              "name": "DeviceController",
+              "description": "Manages trusted device binding and verification",
+              "technology": "Express Controller",
+              "tags": ["Controller"]
+            },
+            {
+              "id": "comp-session-controller",
+              "type": "component",
+              "name": "SessionController",
+              "description": "Handles session lifecycle management",
+              "technology": "Express Controller",
+              "tags": ["Controller"]
+            },
+            {
+              "id": "comp-user-controller",
+              "type": "component",
+              "name": "UserController",
+              "description": "Provides user profile information",
+              "technology": "Express Controller",
+              "tags": ["Controller"]
+            },
+            {
+              "id": "comp-oidc-controller",
+              "type": "component",
+              "name": "OIDCController",
+              "description": "Provides OpenID Connect discovery endpoints",
+              "technology": "Express Controller",
+              "tags": ["Controller"]
+            },
+            {
+              "id": "comp-token-service",
+              "type": "component",
+              "name": "TokenService",
+              "description": "Generates, validates, and rotates JWT tokens",
+              "technology": "Service",
+              "tags": ["Service"]
+            },
+            {
+              "id": "comp-mfa-service",
+              "type": "component",
+              "name": "MfaService",
+              "description": "Orchestrates multi-factor authentication logic",
+              "technology": "Service",
+              "tags": ["Service"]
+            },
+            {
+              "id": "comp-device-service",
+              "type": "component",
+              "name": "DeviceService",
+              "description": "Manages device fingerprinting and trust evaluation",
+              "technology": "Service",
+              "tags": ["Service"]
+            },
+            {
+              "id": "comp-session-service",
+              "type": "component",
+              "name": "SessionService",
+              "description": "Manages user session lifecycle and validation",
+              "technology": "Service",
+              "tags": ["Service"]
+            },
+            {
+              "id": "comp-esign-service",
+              "type": "component",
+              "name": "ESignService",
+              "description": "Handles electronic signature acceptance and verification",
+              "technology": "Service",
+              "tags": ["Service"]
+            },
+            {
+              "id": "comp-user-service",
+              "type": "component",
+              "name": "UserService",
+              "description": "Provides user data access and management",
+              "technology": "Service",
+              "tags": ["Service"]
+            },
+            {
+              "id": "comp-repositories",
+              "type": "component",
+              "name": "Repositories",
+              "description": "Data access layer for database operations (AuthContext, Session, Token, TrustedDevice, DrsEvaluation, AuditLog, AuthTransaction repositories)",
+              "technology": "Repository Pattern",
+              "tags": ["Repository"]
+            },
+            {
+              "id": "comp-auth-middleware",
+              "type": "component",
+              "name": "Auth Middleware",
+              "description": "JWT token validation and route protection",
+              "technology": "Express Middleware",
+              "tags": ["Middleware"]
+            },
+            {
+              "id": "comp-rate-limiter",
+              "type": "component",
+              "name": "Rate Limiter",
+              "description": "API rate limiting and DDoS protection",
+              "technology": "Express Middleware",
+              "tags": ["Middleware"]
+            }
+          ]
+        },
+        {
+          "id": "cont-ciam-ui-sdk",
+          "type": "container",
+          "name": "CIAM UI SDK",
+          "description": "Reusable React components and hooks for authentication flows",
+          "technology": "React 18.2, TypeScript 5.2, Material-UI 5.14",
+          "tags": ["Frontend", "Library"],
+          "components": [
+            {
+              "id": "comp-ciam-provider",
+              "type": "component",
+              "name": "CiamProvider",
+              "description": "React context provider for authentication state management",
+              "technology": "React Context",
+              "tags": ["Context"]
+            },
+            {
+              "id": "comp-login-component",
+              "type": "component",
+              "name": "CiamLoginComponent",
+              "description": "Login form with username/password authentication",
+              "technology": "React Component",
+              "tags": ["Component"]
+            },
+            {
+              "id": "comp-mfa-dialog",
+              "type": "component",
+              "name": "MfaMethodSelectionDialog",
+              "description": "MFA method selection (OTP, Push)",
+              "technology": "React Component",
+              "tags": ["Component"]
+            },
+            {
+              "id": "comp-device-bind-dialog",
+              "type": "component",
+              "name": "DeviceBindDialog",
+              "description": "Device trust consent and binding UI",
+              "technology": "React Component",
+              "tags": ["Component"]
+            },
+            {
+              "id": "comp-esign-dialog",
+              "type": "component",
+              "name": "ESignDialog",
+              "description": "Electronic signature acceptance dialog",
+              "technology": "React Component",
+              "tags": ["Component"]
+            },
+            {
+              "id": "comp-protected-route",
+              "type": "component",
+              "name": "ProtectedRoute",
+              "description": "Route guard component for authenticated pages",
+              "technology": "React Component",
+              "tags": ["Component"]
+            },
+            {
+              "id": "comp-protected-app",
+              "type": "component",
+              "name": "CiamProtectedApp",
+              "description": "Wrapper component for entire authenticated application",
+              "technology": "React Component",
+              "tags": ["Component"]
+            },
+            {
+              "id": "comp-use-auth-hook",
+              "type": "component",
+              "name": "useAuth Hook",
+              "description": "Custom hook for authentication state and user info",
+              "technology": "React Hook",
+              "tags": ["Hook"]
+            },
+            {
+              "id": "comp-use-mfa-hook",
+              "type": "component",
+              "name": "useMfa Hook",
+              "description": "Custom hook for MFA operations",
+              "technology": "React Hook",
+              "tags": ["Hook"]
+            },
+            {
+              "id": "comp-auth-service",
+              "type": "component",
+              "name": "AuthService",
+              "description": "HTTP client for CIAM Backend API calls",
+              "technology": "API Client",
+              "tags": ["Service"]
+            }
+          ]
+        },
+        {
+          "id": "cont-database",
+          "type": "container",
+          "name": "PostgreSQL Database",
+          "description": "Stores user sessions, tokens, devices, and audit logs. 7 core tables: auth_contexts, auth_transactions, sessions, tokens, trusted_devices, drs_evaluations, audit_logs",
+          "technology": "PostgreSQL 14+",
+          "tags": ["Database"]
+        }
+      ]
+    },
+    {
+      "id": "sys-storefront",
+      "type": "softwareSystem",
+      "name": "Storefront Application",
+      "description": "Public-facing e-commerce website with product browsing and shopping cart",
+      "tags": ["Internal", "WebApp"],
+      "containers": [
+        {
+          "id": "cont-storefront",
+          "type": "container",
+          "name": "Storefront Web App",
+          "description": "Public-facing e-commerce website. Public storefront with product browsing and shopping cart, uses CIAM UI SDK for authentication",
+          "technology": "React 18.2, Vite 4.5, Port 3000",
+          "tags": ["Frontend", "WebApp"]
+        }
+      ]
+    },
+    {
+      "id": "sys-account-app",
+      "type": "softwareSystem",
+      "name": "Account Servicing Application",
+      "description": "Secure customer account management portal for customers and support agents",
+      "tags": ["Internal", "WebApp"],
+      "containers": [
+        {
+          "id": "cont-account-app",
+          "type": "container",
+          "name": "Account Servicing Web App",
+          "description": "Secure customer account management portal. Authenticated account management interface for customers and support agents, uses CIAM UI SDK",
+          "technology": "React 18.2, Vite 4.5, Port 3001",
+          "tags": ["Frontend", "WebApp"]
+        }
+      ]
+    },
+    {
+      "id": "sys-ldap",
+      "type": "softwareSystem",
+      "name": "LDAP Directory",
+      "description": "Corporate user directory for credential validation",
+      "tags": ["External"],
+      "containers": []
+    },
+    {
+      "id": "sys-drs",
+      "type": "softwareSystem",
+      "name": "Transmit DRS",
+      "description": "Device Risk Scoring service for fraud prevention",
+      "tags": ["External"],
+      "containers": []
+    }
+  ],
+  "relationships": [
+    {
+      "source": "cont-ciam-ui-sdk",
+      "target": "cont-ciam-backend",
+      "description": "Makes API calls for authentication",
+      "technology": "HTTPS/JSON (Port 8080)"
+    },
+    {
+      "source": "cont-ciam-backend",
+      "target": "cont-database",
+      "description": "Reads from and writes to",
+      "technology": "SQL via Kysely"
+    },
+    {
+      "source": "cont-ciam-backend",
+      "target": "sys-ldap",
+      "description": "Validates user credentials",
+      "technology": "LDAPS"
+    },
+    {
+      "source": "cont-ciam-backend",
+      "target": "sys-drs",
+      "description": "Requests device risk scores",
+      "technology": "HTTPS/REST"
+    },
+    {
+      "source": "cont-storefront",
+      "target": "cont-ciam-ui-sdk",
+      "description": "Imports authentication components",
+      "technology": "npm package dependency"
+    },
+    {
+      "source": "cont-account-app",
+      "target": "cont-ciam-ui-sdk",
+      "description": "Imports authentication components",
+      "technology": "npm package dependency"
+    }
+  ]
+}

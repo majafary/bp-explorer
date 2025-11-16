@@ -1,0 +1,16 @@
+[
+  {
+    "id": "bp-ciam",
+    "name": "CIAM Integration Suite",
+    "description": "Customer Identity and Access Management platform with multi-factor authentication, device trust, and electronic signatures",
+    "organization": "Unit CIO Level",
+    "version": "1.0",
+    "status": "active",
+    "lobs": ["Deposits", "Auto", "Invest", "Wealth Management"],
+    "metadata": {
+      "created": "2025-01-15",
+      "updated": "2025-11-15",
+      "owner": "Enterprise Architecture"
+    }
+  }
+]

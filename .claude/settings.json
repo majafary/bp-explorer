@@ -1,0 +1,92 @@
+{
+  "project": {
+    "name": "CIAM Enterprise Architecture Viewer",
+    "type": "react-typescript",
+    "focus": "data-integrity"
+  },
+
+  "dataIntegrity": {
+    "enabled": true,
+    "criticalFiles": [
+      "src/data/blueprints.json",
+      "src/data/ciam-capabilities.json",
+      "src/data/ciam-systems.json"
+    ],
+    "autoValidate": {
+      "beforeChanges": true,
+      "afterChanges": true,
+      "command": "npm run validate-data"
+    },
+    "referentialIntegrity": {
+      "enforceSystemIds": true,
+      "enforceBlueprintId": true,
+      "enforceHierarchy": true,
+      "noOrphanedReferences": true
+    }
+  },
+
+  "workflows": {
+    "addCapability": {
+      "requireReadAllFiles": true,
+      "requireValidation": true,
+      "requireApproval": true,
+      "validateSystemIds": true
+    },
+    "modifyCapability": {
+      "requireImpactAnalysis": true,
+      "requireApproval": true,
+      "validateReferences": true
+    },
+    "addSystem": {
+      "requireReadAllFiles": true,
+      "checkCapabilityReferences": true,
+      "requireApproval": true
+    }
+  },
+
+  "approvalGates": {
+    "enabled": true,
+    "requireExplicit": true,
+    "keywords": {
+      "approve": ["yes", "approve", "proceed", "confirm", "go ahead"],
+      "reject": ["no", "wait", "stop", "cancel"]
+    }
+  },
+
+  "validation": {
+    "postChangeChecks": [
+      "jsonSyntax",
+      "referentialIntegrity",
+      "hierarchyStructure",
+      "typescriptBuild"
+    ],
+    "buildCommand": "npm run build",
+    "validationCommand": "npm run validate-data"
+  },
+
+  "communication": {
+    "style": "professional",
+    "verbosity": "concise",
+    "avoidMetaWork": true,
+    "focusOnValue": true
+  },
+
+  "persona": {
+    "dataArchitect": {
+      "autoActivate": true,
+      "triggers": {
+        "filePaths": ["src/data/*.json", "data/*.json"],
+        "keywords": ["add capability", "modify system", "data model"]
+      }
+    }
+  },
+
+  "governance": {
+    "evolution": {
+      "enabled": true,
+      "patternThreshold": 3,
+      "proposeRuleImprovements": true,
+      "trackMetrics": false
+    }
+  }
+}
