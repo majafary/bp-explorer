@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import capabilitiesDataImport from '../data/ciam-capabilities.json';
 import systemsDataImport from '../data/ciam-systems.json';
 import type { CapabilityData, Capability, SystemData } from '../types';
+import { DiagramModal } from '../components/DiagramModal';
 import './CapabilitiesPage.css';
 
 const capabilitiesData = capabilitiesDataImport as CapabilityData;
 const systemsData = systemsDataImport as SystemData;
 
+// Structurizr configuration
+const STRUCTURIZR_BASE_URL = 'http://localhost:8080';
+
 export function CapabilitiesPage() {
-  const { blueprintId } = useParams();
-  const navigate = useNavigate();
   const location = useLocation();
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [selectedCapability, setSelectedCapability] = useState<Capability | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleExpand = (id: string) => {
     const newExpanded = new Set(expandedIds);
@@ -89,16 +92,9 @@ export function CapabilitiesPage() {
     }
   }, [location.hash]);
 
-  const handleViewInC4 = (systemId: string) => {
-    // Find the system to determine if we need to drill down
-    const system = systemsData.systems.find((s) => s.id === systemId);
-    if (system && system.containers.length > 0) {
-      // Navigate to container view
-      navigate(`/blueprints/${blueprintId}/c4/${systemId}`);
-    } else {
-      // Navigate to system context
-      navigate(`/blueprints/${blueprintId}/c4`);
-    }
+  const handleViewInC4 = () => {
+    // Open the diagram modal instead of navigating
+    setIsModalOpen(true);
   };
 
   const getSystemName = (systemId: string): string => {
@@ -211,7 +207,7 @@ export function CapabilitiesPage() {
                       <div key={systemId} className="system-item">
                         <span className="system-name">{getSystemName(systemId)}</span>
                         <button
-                          onClick={() => handleViewInC4(systemId)}
+                          onClick={handleViewInC4}
                           className="btn-view-c4"
                         >
                           View in C4 →
@@ -243,6 +239,12 @@ export function CapabilitiesPage() {
           )}
         </div>
       </div>
+
+      <DiagramModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        structurizrUrl={`${STRUCTURIZR_BASE_URL}/workspace/diagrams`}
+      />
     </div>
   );
 }
