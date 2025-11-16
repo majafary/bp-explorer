@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import capabilitiesDataImport from '../data/ciam-capabilities.json';
 import systemsDataImport from '../data/ciam-systems.json';
 import type { CapabilityData, Capability, SystemData } from '../types';
@@ -11,6 +11,7 @@ const systemsData = systemsDataImport as SystemData;
 export function CapabilitiesPage() {
   const { blueprintId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [selectedCapability, setSelectedCapability] = useState<Capability | null>(null);
 
@@ -27,6 +28,66 @@ export function CapabilitiesPage() {
   const handleCapabilityClick = (capability: Capability) => {
     setSelectedCapability(capability);
   };
+
+  // Find capability by ID (recursively search tree)
+  const findCapabilityById = (
+    capabilities: Capability[],
+    id: string
+  ): Capability | null => {
+    for (const cap of capabilities) {
+      if (cap.id === id) return cap;
+      if (cap.children) {
+        const found = findCapabilityById(cap.children, id);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
+  // Get all parent IDs for a capability (for auto-expanding tree)
+  const getParentIds = (capabilities: Capability[], targetId: string): string[] => {
+    const parents: string[] = [];
+
+    const findParents = (caps: Capability[], target: string): boolean => {
+      for (const cap of caps) {
+        if (cap.id === target) return true;
+        if (cap.children) {
+          if (findParents(cap.children, target)) {
+            parents.push(cap.id);
+            return true;
+          }
+        }
+      }
+      return false;
+    };
+
+    findParents(capabilities, targetId);
+    return parents;
+  };
+
+  // Handle hash-based navigation (from search results)
+  useEffect(() => {
+    const hash = location.hash.slice(1); // Remove '#' prefix
+    if (hash && capabilitiesData) {
+      const capability = findCapabilityById(capabilitiesData.capabilities, hash);
+      if (capability) {
+        // Auto-expand parent capabilities
+        const parents = getParentIds(capabilitiesData.capabilities, hash);
+        setExpandedIds(new Set(parents));
+
+        // Select the capability
+        setSelectedCapability(capability);
+
+        // Scroll to the capability after a brief delay (to ensure rendering)
+        setTimeout(() => {
+          const element = document.querySelector(`[data-capability-id="${hash}"]`);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 100);
+      }
+    }
+  }, [location.hash]);
 
   const handleViewInC4 = (systemId: string) => {
     // Find the system to determine if we need to drill down
@@ -64,6 +125,7 @@ export function CapabilitiesPage() {
           return (
             <div key={capability.id} className="capability-item">
               <div
+                data-capability-id={capability.id}
                 className={`capability-header level-${level} ${isSelected ? 'selected' : ''}`}
                 onClick={() => {
                   if (hasChildren) {

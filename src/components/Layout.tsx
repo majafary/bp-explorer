@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { GlobalSearch } from './GlobalSearch';
 import './Layout.css';
 
 interface LayoutProps {
@@ -16,6 +17,7 @@ export function Layout({ children }: LayoutProps) {
           <Link to="/" className="logo">
             <h1>Enterprise Architecture Viewer</h1>
           </Link>
+          <GlobalSearch />
           {blueprintId && (
             <nav className="main-nav">
               <Link

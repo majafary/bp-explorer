@@ -92,3 +92,17 @@ export interface NavigationState {
   c4ViewState?: C4ViewState;
   selectedCapabilityId?: string;
 }
+
+// Search Types
+export type SearchResultType = 'blueprint' | 'capability' | 'system' | 'container' | 'component';
+
+export interface SearchResult {
+  type: SearchResultType;
+  id: string;
+  name: string;
+  description?: string;
+  blueprintId: string;
+  blueprintName: string;
+  routePath: string;
+  metadata?: string; // Additional context (e.g., capability code, technology)
+}
