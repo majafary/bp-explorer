@@ -1,0 +1,238 @@
+/* ============================================
+   Diagram Button - Professional Action Buttons
+   Features: Smooth animations, accessibility, responsive
+   ============================================ */
+
+/* Inline Button (Primary Style) */
+.diagram-button-inline {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2),
+    0 2px 4px -1px rgba(59, 130, 246, 0.1);
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.diagram-button-inline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.diagram-button-inline:hover::before {
+  opacity: 1;
+}
+
+.diagram-button-inline:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3),
+    0 4px 6px -2px rgba(59, 130, 246, 0.2);
+}
+
+.diagram-button-inline:active {
+  transform: translateY(0);
+}
+
+.diagram-button-inline:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 4px;
+}
+
+.diagram-button-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.diagram-button-inline:hover .diagram-button-icon {
+  background: rgba(255, 255, 255, 0.25);
+  transform: rotate(5deg) scale(1.05);
+}
+
+.diagram-button-content {
+  flex: 1;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.diagram-button-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  letter-spacing: -0.01em;
+}
+
+.diagram-button-subtitle {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+}
+
+.diagram-button-arrow {
+  flex-shrink: 0;
+  color: white;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.diagram-button-inline:hover .diagram-button-arrow {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+/* Floating Action Button (FAB) */
+.diagram-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3),
+    0 4px 6px -2px rgba(59, 130, 246, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  outline: none;
+}
+
+.diagram-fab:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4),
+    0 10px 10px -5px rgba(59, 130, 246, 0.3);
+}
+
+.diagram-fab:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.diagram-fab:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 4px;
+}
+
+.diagram-fab svg {
+  transition: transform 0.3s ease;
+}
+
+.diagram-fab:hover svg {
+  transform: scale(1.1);
+}
+
+.diagram-fab-label {
+  position: absolute;
+  right: calc(100% + 1rem);
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.diagram-fab:hover .diagram-fab-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .diagram-button-inline {
+    padding: 1rem 1.25rem;
+  }
+
+  .diagram-button-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .diagram-button-title {
+    font-size: 0.9375rem;
+  }
+
+  .diagram-button-subtitle {
+    font-size: 0.8125rem;
+  }
+
+  .diagram-fab {
+    width: 56px;
+    height: 56px;
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .diagram-fab svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .diagram-fab-label {
+    display: none; /* Hide tooltip on mobile */
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .diagram-button-inline,
+  .diagram-fab,
+  .diagram-button-icon,
+  .diagram-button-arrow,
+  .diagram-fab svg {
+    transition: none;
+  }
+
+  .diagram-button-inline:hover,
+  .diagram-fab:hover {
+    transform: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .diagram-button-inline {
+    border: 2px solid #1e40af;
+  }
+
+  .diagram-fab {
+    border: 2px solid #1e40af;
+  }
+}

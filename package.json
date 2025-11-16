@@ -8,7 +8,14 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "validate-data": "node scripts/validate-data-model.cjs"
+    "validate-data": "node scripts/validate-data-model.cjs",
+    "structurizr:generate": "tsx scripts/generate-structurizr-dsl.ts",
+    "structurizr:watch": "tsx scripts/watch-and-sync.ts",
+    "structurizr:start": "docker-compose up -d structurizr",
+    "structurizr:stop": "docker-compose down",
+    "structurizr:logs": "docker-compose logs -f structurizr",
+    "structurizr:dev": "concurrently \"npm run dev\" \"npm run structurizr:watch\" \"npm run structurizr:start\"",
+    "c4:sync": "npm run structurizr:generate && npm run structurizr:start"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
@@ -22,10 +29,13 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
+    "chokidar": "^4.0.3",
+    "concurrently": "^9.1.2",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "tsx": "^4.19.2",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.3",
     "vite": "^7.2.2"

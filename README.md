@@ -1,6 +1,35 @@
-# Enterprise Architecture Viewer - CIAM Blueprint MVP
+# Enterprise Architecture Viewer - Blueprint Explorer
 
 A modern web application for browsing enterprise architecture blueprints, capabilities hierarchies, and C4 architecture diagrams.
+
+## 🚀 Quick Start (Docker)
+
+**Start everything with one command:**
+```bash
+cd bp-explorer
+./start.sh
+```
+
+This builds and runs:
+- ✅ React app (bp-explorer)
+- ✅ Structurizr Lite with auto-generated workspace
+- ✅ Nginx reverse proxy (for iframe embedding)
+
+**Access the application:**
+- **React App**: http://localhost:5173
+- **Structurizr Diagrams**: http://localhost:8080
+
+**Stop all containers:**
+```bash
+./stop.sh
+```
+
+**View container logs:**
+```bash
+docker logs -f bp-explorer
+docker logs -f structurizr
+docker logs -f nginx-proxy
+```
 
 ## Features
 
@@ -25,6 +54,14 @@ A modern web application for browsing enterprise architecture blueprints, capabi
 - **Breadcrumb Navigation**: Easy navigation between levels
 - **Visual Differentiation**: Color-coded by type (Backend, Frontend, Database, External)
 - **Relationship Visualization**: See connections between systems and containers
+- **🆕 Professional Architecture Diagrams**: Integrated Structurizr-powered C4 diagrams
+  - **View Mode Toggle**: Switch between card grid and interactive diagram views
+  - **Full-Screen Modal**: Professional diagram viewer with glassmorphism design
+  - **Auto-Sync**: JSON changes automatically regenerate diagrams
+  - **Context-Aware**: Diagrams update based on current view (System/Container/Component)
+  - **Zoom & Pan**: Full Structurizr controls for diagram navigation
+  - **Export Options**: Export diagrams as PNG/SVG
+  - **Responsive Design**: Mobile-friendly with new tab fallback
 
 #### 4. Bidirectional Navigation (FR-005 - Critical MVP Feature)
 - **Capability → C4**: Click capability → See implementing systems → Navigate to C4 diagram
@@ -34,33 +71,92 @@ A modern web application for browsing enterprise architecture blueprints, capabi
 
 ### Technology Stack
 
-- **React 18.2** - Modern React with hooks
-- **TypeScript 5.2** - Type safety and developer experience
-- **Vite 4.5** - Fast build tool and dev server
-- **React Router 6** - Client-side routing with URL state management
-- **CSS3** - Modern styling with gradients and animations
+- **React 19.2** - Modern React with hooks
+- **TypeScript 5.9** - Type safety and developer experience
+- **Vite 7.2** - Fast build tool and dev server
+- **React Router 7** - Client-side routing with URL state management
+- **CSS3** - Modern styling with gradients, glassmorphism, and animations
+- **Structurizr Lite** - Professional C4 diagram rendering (Docker)
+- **Chokidar** - File watching for auto-sync
+- **tsx** - TypeScript execution for build scripts
+
+### Diagram Architecture
+
+The application integrates professional C4 diagrams through a multi-layered architecture:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     React Application                        │
+│                    (localhost:5173)                          │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │  C4ViewerPage                                         │  │
+│  │  ├─ ViewModeToggle (Cards ⇄ Diagram)                 │  │
+│  │  ├─ DiagramButton (Inline CTA)                       │  │
+│  │  └─ DiagramModal (Full-screen overlay)               │  │
+│  └───────────────────────────────────────────────────────┘  │
+└──────────────────────┬──────────────────────────────────────┘
+                       │ iframe embed
+                       ↓
+┌─────────────────────────────────────────────────────────────┐
+│                 Structurizr Lite (Docker)                    │
+│                    (localhost:8080)                          │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │  Workspace DSL → Auto-reload → Rendered C4 Diagrams  │  │
+│  └───────────────────────────────────────────────────────┘  │
+└──────────────────────┬──────────────────────────────────────┘
+                       ↑ monitors
+                       │
+┌─────────────────────────────────────────────────────────────┐
+│               File Watcher (Chokidar)                        │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │  ciam-systems.json → generates → workspace.dsl       │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Data Flow:**
+1. JSON Model (`ciam-systems.json`) - Single source of truth
+2. DSL Generator (`generate-structurizr-dsl.ts`) - Converts JSON → Structurizr DSL
+3. File Watcher (`watch-and-sync.ts`) - Monitors JSON for changes
+4. Structurizr Lite - Auto-reloads workspace on DSL changes
+5. React Modal - Embeds Structurizr via iframe with context routing
 
 ## Project Structure
 
 ```
-ciam-viewer/
-├── src/
-│   ├── data/                    # JSON data files
-│   │   ├── blueprints.json      # Blueprint metadata
-│   │   ├── ciam-capabilities.json  # CIAM capabilities hierarchy
-│   │   └── ciam-systems.json    # C4 architecture data
-│   ├── types/                   # TypeScript type definitions
-│   │   └── index.ts
-│   ├── components/              # Reusable components
-│   │   ├── Layout.tsx
-│   │   └── Layout.css
-│   ├── pages/                   # Page components
-│   │   ├── HomePage.tsx         # Blueprint selector
-│   │   ├── CapabilitiesPage.tsx # Capability browser
-│   │   ├── C4ViewerPage.tsx     # C4 diagram viewer
-│   │   └── *.css                # Page styles
-│   ├── App.tsx                  # Main app with routing
-│   └── main.tsx                 # Entry point
+ciam-bp/
+├── docker-compose.yml            # Structurizr Lite container
+├── structurizr-workspace/        # Auto-generated workspace
+│   └── workspace.dsl             # Structurizr DSL (auto-generated)
+└── ciam-viewer/
+    ├── src/
+    │   ├── data/                 # JSON data files
+    │   │   ├── blueprints.json   # Blueprint metadata
+    │   │   ├── ciam-capabilities.json  # CIAM capabilities hierarchy
+    │   │   └── ciam-systems.json # C4 architecture data (source of truth)
+    │   ├── types/                # TypeScript type definitions
+    │   │   └── index.ts
+    │   ├── components/           # Reusable components
+    │   │   ├── Layout.tsx
+    │   │   ├── FilterBar.tsx
+    │   │   ├── StatsPanel.tsx
+    │   │   ├── DiagramModal.tsx  # 🆕 Full-screen diagram modal
+    │   │   ├── DiagramButton.tsx # 🆕 Diagram action button
+    │   │   ├── ViewModeToggle.tsx # 🆕 Card/Diagram toggle
+    │   │   └── *.css
+    │   ├── pages/                # Page components
+    │   │   ├── HomePage.tsx      # Blueprint selector
+    │   │   ├── CapabilitiesPage.tsx # Capability browser
+    │   │   ├── C4ViewerPage.tsx  # C4 diagram viewer
+    │   │   └── *.css
+    │   ├── App.tsx               # Main app with routing
+    │   └── main.tsx              # Entry point
+    ├── scripts/                  # 🆕 Build & automation scripts
+    │   ├── generate-structurizr-dsl.ts # JSON → DSL converter
+    │   ├── watch-and-sync.ts     # File watcher for auto-sync
+    │   └── validate-data-model.cjs # Data integrity validation
+    ├── package.json              # Dependencies & npm scripts
+    └── README.md                 # This file
 ```
 
 ## Data Model
@@ -85,6 +181,8 @@ ciam-viewer/
 ## Running the Application
 
 ### Development Mode
+
+#### Option 1: React App Only (Basic Mode)
 ```bash
 cd ciam-viewer
 npm install
@@ -92,6 +190,52 @@ npm run dev
 ```
 
 The app will be available at: **http://localhost:5173/**
+
+#### Option 2: With Structurizr Diagrams (Full Experience)
+
+**Prerequisites:**
+- Docker Desktop installed and running
+- Ports 5173 and 8080 available
+
+**First Time Setup:**
+```bash
+cd ciam-viewer
+npm install
+
+# Generate initial Structurizr workspace from JSON
+npm run structurizr:generate
+
+# Start everything in one command (React + Structurizr + Auto-sync)
+npm run structurizr:dev
+```
+
+**What This Does:**
+- ✅ Starts React dev server on **http://localhost:5173**
+- ✅ Starts Structurizr Lite on **http://localhost:8080**
+- ✅ Watches `ciam-systems.json` for changes and auto-regenerates DSL
+- ✅ Structurizr auto-reloads diagrams when DSL changes
+
+**Manual Control:**
+```bash
+# Generate DSL from JSON (one-time)
+npm run structurizr:generate
+
+# Start file watcher (monitors JSON → generates DSL)
+npm run structurizr:watch
+
+# Start Structurizr Docker container
+npm run structurizr:start
+
+# Stop Structurizr container
+npm run structurizr:stop
+
+# View Structurizr logs
+npm run structurizr:logs
+```
+
+**Accessing Services:**
+- React App: **http://localhost:5173**
+- Structurizr Diagrams: **http://localhost:8080/workspace/diagrams**
 
 ### Build for Production
 ```bash
@@ -196,11 +340,98 @@ npm run preview
 - System dependency analysis
 - LOB-based views
 
+## Troubleshooting
+
+### Structurizr Diagrams Not Showing
+
+**Problem:** "View Architecture Diagram" button doesn't work or modal shows loading forever
+
+**Solutions:**
+```bash
+# Check if Structurizr container is running
+docker ps | grep structurizr
+
+# Check if Structurizr is accessible
+curl http://localhost:8080
+
+# Restart Structurizr
+npm run structurizr:stop
+npm run structurizr:start
+
+# Check logs for errors
+npm run structurizr:logs
+
+# Regenerate workspace
+npm run structurizr:generate
+```
+
+### Port Already in Use
+
+**Problem:** `Error: Port 8080 is already in use`
+
+**Solutions:**
+```bash
+# Find process using port 8080
+lsof -i :8080
+
+# Kill the process (replace PID)
+kill -9 <PID>
+
+# Or use a different port in docker-compose.yml
+# Change "8080:8080" to "8081:8080" and update STRUCTURIZR_BASE_URL in C4ViewerPage.tsx
+```
+
+### Diagrams Not Auto-Updating
+
+**Problem:** Changes to `ciam-systems.json` don't reflect in diagrams
+
+**Solutions:**
+```bash
+# Ensure file watcher is running
+npm run structurizr:watch
+
+# Manually trigger regeneration
+npm run structurizr:generate
+
+# Check file watcher logs for errors
+```
+
+### Docker Not Found
+
+**Problem:** `docker: command not found`
+
+**Solution:**
+- Install Docker Desktop: https://www.docker.com/products/docker-desktop
+- Start Docker Desktop application
+- Verify: `docker --version`
+
+### TypeScript Errors
+
+**Problem:** TypeScript compilation errors with new components
+
+**Solutions:**
+```bash
+# Reinstall dependencies
+rm -rf node_modules package-lock.json
+npm install
+
+# Check TypeScript version
+npx tsc --version
+
+# Build to see detailed errors
+npm run build
+```
+
 ## Data Sources
 
 The application uses JSON files generated from:
 1. **example_ciam.dsl** - C4 architecture in Structurizr DSL format
 2. **Requirements/capabilities.md** - CIAM capability hierarchy
+
+**Diagram Generation:**
+- JSON data (`ciam-systems.json`) is automatically converted to Structurizr DSL
+- DSL is stored in `structurizr-workspace/workspace.dsl`
+- Structurizr Lite renders the DSL into interactive C4 diagrams
 
 ## Architecture Decisions
 

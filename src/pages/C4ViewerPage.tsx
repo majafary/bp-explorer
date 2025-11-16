@@ -2,9 +2,15 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import systemsDataImport from '../data/ciam-systems.json';
 import type { SystemData, System, Container, Component } from '../types';
+import { DiagramModal } from '../components/DiagramModal';
+import { DiagramButton } from '../components/DiagramButton';
+import { ViewModeToggle, type ViewMode } from '../components/ViewModeToggle';
 import './C4ViewerPage.css';
 
 const systemsData = systemsDataImport as SystemData;
+
+// Structurizr configuration
+const STRUCTURIZR_BASE_URL = 'http://localhost:8080';
 
 export function C4ViewerPage() {
   const { blueprintId, systemId, containerId } = useParams();
@@ -14,6 +20,8 @@ export function C4ViewerPage() {
 
   const [selectedSystem, setSelectedSystem] = useState<System | null>(null);
   const [selectedContainer, setSelectedContainer] = useState<Container | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('cards');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (systemId) {
@@ -52,6 +60,36 @@ export function C4ViewerPage() {
     }
   };
 
+  // Build Structurizr URL based on current view
+  const getStructurizrUrl = (): string => {
+    // Start with the base diagrams URL - Structurizr will show the diagram selector
+    return `${STRUCTURIZR_BASE_URL}/workspace/diagrams`;
+  };
+
+  // Get diagram title based on current view
+  const getDiagramTitle = (): string => {
+    if (selectedContainer) {
+      return `Component Diagram - ${selectedContainer.name}`;
+    } else if (selectedSystem) {
+      return `Container Diagram - ${selectedSystem.name}`;
+    }
+    return 'System Context Diagram';
+  };
+
+  // Handle view mode toggle
+  const handleViewModeChange = (mode: ViewMode) => {
+    setViewMode(mode);
+    if (mode === 'diagram') {
+      setIsModalOpen(true);
+    }
+  };
+
+  // Handle modal close
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setViewMode('cards');
+  };
+
   const renderBreadcrumb = () => {
     return (
       <div className="breadcrumb">
@@ -80,9 +118,23 @@ export function C4ViewerPage() {
     return (
       <div className="c4-view">
         <div className="view-header">
-          <h2>System Context Diagram</h2>
-          <p>High-level view of all systems and their relationships</p>
+          <div className="view-header-content">
+            <div>
+              <h2>System Context Diagram</h2>
+              <p>High-level view of all systems and their relationships</p>
+            </div>
+            <ViewModeToggle mode={viewMode} onChange={handleViewModeChange} />
+          </div>
         </div>
+
+        <div className="diagram-action-section">
+          <DiagramButton
+            onClick={() => setIsModalOpen(true)}
+            variant="inline"
+            label="View Architecture Diagram"
+          />
+        </div>
+
         <div className="systems-grid">
           {systemsData.systems.map((system) => (
             <div
@@ -143,9 +195,23 @@ export function C4ViewerPage() {
     return (
       <div className="c4-view">
         <div className="view-header">
-          <h2>Container Diagram: {system.name}</h2>
-          <p>Applications and databases within {system.name}</p>
+          <div className="view-header-content">
+            <div>
+              <h2>Container Diagram: {system.name}</h2>
+              <p>Applications and databases within {system.name}</p>
+            </div>
+            <ViewModeToggle mode={viewMode} onChange={handleViewModeChange} />
+          </div>
         </div>
+
+        <div className="diagram-action-section">
+          <DiagramButton
+            onClick={() => setIsModalOpen(true)}
+            variant="inline"
+            label="View Architecture Diagram"
+          />
+        </div>
+
         <div className="containers-grid">
           {system.containers.map((container) => {
             const hasComponents = container.components && container.components.length > 0;
@@ -199,9 +265,23 @@ export function C4ViewerPage() {
     return (
       <div className="c4-view">
         <div className="view-header">
-          <h2>Component Diagram: {container.name}</h2>
-          <p>Internal structure and components</p>
+          <div className="view-header-content">
+            <div>
+              <h2>Component Diagram: {container.name}</h2>
+              <p>Internal structure and components</p>
+            </div>
+            <ViewModeToggle mode={viewMode} onChange={handleViewModeChange} />
+          </div>
         </div>
+
+        <div className="diagram-action-section">
+          <DiagramButton
+            onClick={() => setIsModalOpen(true)}
+            variant="inline"
+            label="View Architecture Diagram"
+          />
+        </div>
+
         {Object.entries(componentsByTag).map(([tag, components]) => (
           <div key={tag} className="component-section">
             <h3 className="section-title">{tag}s</h3>
@@ -234,6 +314,13 @@ export function C4ViewerPage() {
       {!selectedSystem && renderSystemContext()}
       {selectedSystem && !selectedContainer && renderContainerView(selectedSystem)}
       {selectedSystem && selectedContainer && renderComponentView(selectedContainer)}
+
+      <DiagramModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        structurizrUrl={getStructurizrUrl()}
+        title={getDiagramTitle()}
+      />
     </div>
   );
 }

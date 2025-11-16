@@ -1,0 +1,63 @@
+# ============================================
+# Dockerfile for Structurizr Lite with Auto-Generated Workspace
+# Target: AWS ECS Fargate
+# ============================================
+
+FROM node:20-alpine AS workspace-generator
+
+WORKDIR /generator
+
+# Copy data files and generator script
+COPY ./src/data/ciam-systems.json ./data/ciam-systems.json
+COPY ./src/data/blueprints.json ./data/blueprints.json
+COPY ./scripts/generate-structurizr-dsl.ts ./
+COPY ./package.json ./package.json
+
+# Install only required dependencies for script execution
+RUN npm install tsx typescript @types/node --save-dev
+
+# Generate workspace.dsl from JSON
+# Note: The script outputs to ../../structurizr-workspace/workspace.dsl by default
+# We need to adjust paths or modify the script
+RUN sed -i 's|../../structurizr-workspace|/workspace|g' generate-structurizr-dsl.ts && \
+    sed -i 's|../src/data|./data|g' generate-structurizr-dsl.ts && \
+    mkdir -p /workspace && \
+    npx tsx generate-structurizr-dsl.ts && \
+    ls -la /workspace/ && \
+    echo "Workspace DSL generated successfully"
+
+# Stage 2: Structurizr Lite
+FROM amazoncorretto:21
+
+WORKDIR /usr/local
+
+# Install curl for health checks
+RUN yum install -y curl && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+
+# Download Structurizr Lite
+RUN curl -L https://github.com/structurizr/lite/releases/latest/download/structurizr-lite.war \
+    -o /usr/local/structurizr-lite.war
+
+# Copy generated workspace from generator stage
+COPY --from=workspace-generator /generator/workspace/workspace.dsl /usr/local/structurizr/workspace.dsl
+
+# Set workspace filename (Structurizr appends .dsl automatically)
+ENV STRUCTURIZR_WORKSPACE_FILENAME=workspace
+ENV STRUCTURIZR_AUTO_REFRESH_INTERVAL=0
+
+# Expose port 8080
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD curl -f http://localhost:8080/ || exit 1
+
+# Run Structurizr Lite
+ENTRYPOINT ["java", \
+    "-Xmx256m", \
+    "-Xms128m", \
+    "-XX:+UseContainerSupport", \
+    "-jar", \
+    "/usr/local/structurizr-lite.war"]

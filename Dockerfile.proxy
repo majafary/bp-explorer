@@ -1,0 +1,37 @@
+# ============================================
+# Dockerfile for Nginx Reverse Proxy
+# Strips X-Frame-Options to allow iframe embedding
+# Target: AWS ECS Fargate
+# ============================================
+
+FROM nginx:alpine
+
+# Install envsubst (part of gettext package)
+RUN apk add --no-cache gettext
+
+# Copy nginx configuration template
+COPY deployment/nginx-proxy.conf /etc/nginx/nginx.conf.template
+
+# Copy entrypoint script
+COPY deployment/docker-entrypoint-proxy.sh /docker-entrypoint-proxy.sh
+RUN chmod +x /docker-entrypoint-proxy.sh
+
+# Create cache directory
+RUN mkdir -p /var/cache/nginx/proxy_temp && \
+    chown -R nginx:nginx /var/cache/nginx
+
+# Set default environment variables
+ENV STRUCTURIZR_HOST=structurizr
+ENV STRUCTURIZR_PORT=8080
+ENV CORS_ORIGIN=*
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost:80/health || exit 1
+
+# Expose port 80
+EXPOSE 80
+
+# Use custom entrypoint to substitute env vars
+ENTRYPOINT ["/docker-entrypoint-proxy.sh"]
+CMD ["nginx", "-g", "daemon off;"]

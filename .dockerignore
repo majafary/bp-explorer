@@ -1,0 +1,49 @@
+# ============================================
+# .dockerignore for React App build
+# ============================================
+
+# Node modules (will be installed in container)
+node_modules
+npm-debug.log
+
+# Build outputs (will be created in container)
+dist
+build
+.vite
+
+# Development files
+.git
+.gitignore
+.env
+.env.local
+.env.development
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md
+docs
+claudedocs
+
+# Test files
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+__tests__
+tests
+
+# Scripts not needed for build
+scripts/watch-and-sync.ts
+
+# Logs
+logs
+*.log

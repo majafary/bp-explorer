@@ -1,0 +1,67 @@
+# ============================================
+# Docker Compose for Local Testing with Production Dockerfiles
+# Uses the same Dockerfiles that will be deployed to ECS
+# ============================================
+
+services:
+  # React Application
+  bp-explorer:
+    build:
+      context: ..
+      dockerfile: Dockerfile.app
+    container_name: bp-explorer
+    ports:
+      - "5173:80"
+    networks:
+      - bp-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # Structurizr Lite with Auto-Generated Workspace
+  structurizr:
+    build:
+      context: ..
+      dockerfile: Dockerfile.structurizr
+    container_name: structurizr
+    environment:
+      - STRUCTURIZR_WORKSPACE_FILENAME=workspace
+      - STRUCTURIZR_AUTO_REFRESH_INTERVAL=0
+    networks:
+      - bp-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # Nginx Reverse Proxy (strips X-Frame-Options)
+  proxy:
+    build:
+      context: ..
+      dockerfile: Dockerfile.proxy
+    container_name: nginx-proxy
+    ports:
+      - "8080:80"
+    environment:
+      - STRUCTURIZR_HOST=structurizr
+      - STRUCTURIZR_PORT=8080
+      - CORS_ORIGIN=http://localhost:5173
+    depends_on:
+      - structurizr
+    networks:
+      - bp-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+networks:
+  bp-network:
+    driver: bridge
