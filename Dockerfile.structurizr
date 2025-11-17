@@ -32,12 +32,12 @@ FROM amazoncorretto:21
 WORKDIR /usr/local
 
 # Install curl for health checks
-RUN yum --disablerepo=AmazonCoretto --setopt=sslverify=false install -y curl graphviz && \
+RUN yum --disablerepo=AmazonCorretto --setopt=sslverify=false install -y curl graphviz && \
     yum clean all && \
     rm -rf /var/cache/yum
 
 # Download Structurizr Lite
-RUN curl -L https://github.com/structurizr/lite/releases/latest/download/structurizr-lite.war \
+RUN curl -k -L https://github.com/structurizr/lite/releases/latest/download/structurizr-lite.war \
     -o /usr/local/structurizr-lite.war
 
 # Copy generated workspace from generator stage
