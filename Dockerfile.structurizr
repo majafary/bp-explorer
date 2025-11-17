@@ -32,7 +32,7 @@ FROM amazoncorretto:21
 WORKDIR /usr/local
 
 # Install curl for health checks
-RUN yum install -y curl && \
+RUN yum --disablerepo=AmazonCoretto --setopt=sslverify=false install -y curl graphviz && \
     yum clean all && \
     rm -rf /var/cache/yum
 
